@@ -2,14 +2,13 @@ package br.com.poli.campoMinado.mapa;
 
 import br.com.poli.campoMinado.Dificuldade;
 
-public class MapaFacil extends Mapa {
-
-	private static final Dificuldade TAMANHO = Dificuldade.FACIL;
-	private static final int BOMBAS = 10;
+public class MapaDificil extends Mapa{
 	
-	public MapaFacil() {
-		super(TAMANHO.getValor(),BOMBAS);
-		
+	public static final Dificuldade TAMANHO = Dificuldade.DIFICIL;
+	public static final int BOMBAS = 99;
+
+	public MapaDificil() {
+		super(TAMANHO.getValor(), BOMBAS);
 	}
 
 	public static Dificuldade getTamanho() {
@@ -19,5 +18,4 @@ public class MapaFacil extends Mapa {
 	public static int getBombas() {
 		return BOMBAS;
 	}
-	
 }

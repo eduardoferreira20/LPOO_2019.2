@@ -6,12 +6,14 @@ import java.util.Random;
 import br.com.poli.campoMinado.Celula;
 import br.com.poli.campoMinado.Dificuldade;
 
-abstract class Mapa {
+public abstract class Mapa {
 	// Atributos da classe Mapa
 	private Celula[][] campo;
 
 	// Constutor
 	public Mapa(int bombas, int tamanho) {
+
+		this.campo = new Celula[tamanho][tamanho];
 
 		inicializarCelula();
 		distribuirBombas(bombas);
@@ -19,18 +21,11 @@ abstract class Mapa {
 
 	}
 
-	/*
-	 * Getters e Setters
-	 */
-
 	public void inicializarCelula() {
 
 		for (int i = 0; i < campo.length; i++) {
 			for (int j = 0; j < campo.length; j++) {
-				this.campo[i][j].setQtdBombasVizinhas(0);
-				this.campo[i][j].setBomba(false);
-				this.campo[i][j].setBandeira(false);
-				this.campo[i][j].setVisivel(false);
+				this.campo[i][j] = new Celula(false, false, false, 0);// inicializa a celula
 			}
 		}
 	}
@@ -58,54 +53,87 @@ abstract class Mapa {
 			if (this.campo[posicaoX][posicaoY].isBomba() == false) {
 
 				this.campo[posicaoX][posicaoY].setBomba(true);
+				this.campo[posicaoX][posicaoY].setQtdBombasVizinhas(-1);
 				bomba++;
 			}
 		}
 	}
-	//precisa retornar um int
+
 	public void contarBombas() {
-		for(int i = 0; i < campo.length;i++) {
-			for(int j = 0; j < campo.length; j++) {
-				if(this.campo[i+1][j].isBomba()==true && this.campo[i][j+1].isBomba()==true) {
-					this.campo[i][j].setQtdBombasVizinhas(2);
+
+		for (int linha = 0; linha < this.campo.length; linha++) { // procura por bombas no mapa
+			for (int coluna = 0; coluna < this.campo.length; coluna++) {
+				// se ele achar bomba no mapa, ele entra nessa condição
+				if (this.campo[linha][coluna].isBomba()) {
+
+					for (int i = -1; i <= 1; i++) {
+						for (int j = -1; j <= 1; j++) {
+
+							// verifica se está na borda
+							if (!(linha + i < 0 || linha + i > this.campo.length - 1 || coluna + j < 0
+									|| coluna + j > this.campo.length - 1)) {
+								/*
+								 * se não for bomba, soma +1 na quantidade de bombas vizinhas
+								 */
+								if (this.campo[linha + i][coluna + j].isBomba() == false) {//
+									this.campo[linha + i][coluna + j].setQtdBombasVizinhas(
+											this.campo[linha + i][coluna + j].getQtdBombasVizinhas() + 1);
+								}
+							}
+
+						}
+
+					}
+
 				}
 			}
 		}
 	}
+
 	public void escolherPosicao(int linha, int coluna) {
-		
-		if(this.campo[linha][coluna].isBomba() == true) {
-			
-			System.out.println("Fim de Jogo. Você perdeu!");
-			
-		}else if(this.campo[linha][coluna].isBomba() == false) {
-			
-			this.campo[linha][coluna].setVisivel(true);
+
+		if (this.campo[linha][coluna].isVisivel() == false) {
+			if (this.campo[linha][coluna].isBomba()) {
+				this.campo[linha][coluna].setVisivel(true);
+				System.out.println("Fim de jogo. Você perdeu!!");
+			}
+
+			else if (this.campo[linha][coluna].getQtdBombasVizinhas() != 0) {
+				this.campo[linha][coluna].setVisivel(true);
+
+			}
+
+
+			this.imprimeTela(false);
 		}
 	}
 
 	// mostra o campo minado pronto
 	public void imprimeTela(boolean teste) {
-		
-		if (teste == false) {
-			for (int i = 0; i < campo.length; i++) {
-				for (int j = 0; j < campo.length; j++) {
-					
-					if (this.campo[i][j].isVisivel() == true) {
-						
-						System.out.print("  " + this.campo[i][j] + "  ");
-					}
-				}
-				System.out.println();
-			}
-		} else {
-			for (int i = 0; i < campo.length; i++) {
-				for (int j = 0; j < campo.length; j++) {
 
-					System.out.print("  " + this.campo[i][j] + "  ");
+		for (int i = 0; i < this.campo.length; i++) {
+			for (int j = 0; j < this.campo.length; j++) {
+
+				System.out.print(" ");
+
+				if (teste == true) {
+
+					if (!this.campo[i][j].isBomba())
+						System.out.print(" ");
+					System.out.print(this.campo[i][j].getQtdBombasVizinhas());
 				}
-				System.out.println();
+
+				else {
+
+					if (this.campo[i][j].isVisivel()) {
+						if (!this.campo[i][j].isBomba())
+							System.out.print(" ");
+						System.out.print(this.campo[i][j].getQtdBombasVizinhas());
+					} else
+						System.out.print(" -");
+				}
 			}
+			System.out.println();
 		}
 
 	}

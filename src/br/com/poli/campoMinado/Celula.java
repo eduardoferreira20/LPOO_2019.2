@@ -7,11 +7,11 @@ public class Celula {
 	private int qtdBombasVizinhas;
 	private boolean visivel;
 	
-	public Celula() {
-		this.bandeira = false;
-		this.bomba = false;
-		this.qtdBombasVizinhas = 0;
-		this.visivel = false;
+	public Celula(boolean bandeira, boolean bomba, boolean visivel, int qtdBombasVizinhas) {
+		this.bandeira = bandeira;
+		this.bomba = bomba;
+		this.visivel = visivel;
+		this.qtdBombasVizinhas = qtdBombasVizinhas;
 	}
 	public boolean isBandeira() {
 		return bandeira;
