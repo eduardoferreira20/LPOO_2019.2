@@ -13,14 +13,17 @@ public class CampoMinado{
 		this.jogador = new Jogador(nome);
 		this.dificuldade = dificuldade;
 		
-		if(dificuldade.getValor() == 9) {
+		switch (dificuldade) {
+		case FACIL:
 			this.mapa = new MapaFacil();
-		}else if(dificuldade.getValor() == 16) {
+			break;
+		case MEDIO:
 			this.mapa = new MapaMedio();
-		}else {
+			break;
+		case DIFICIL:
 			this.mapa = new MapaDificil();
+
 		}
-		
 	}
 
 	// Getters e Setters

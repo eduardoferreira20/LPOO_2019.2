@@ -4,14 +4,14 @@ package br.com.poli.campoMinado.mapa;
 import java.util.Random;
 
 import br.com.poli.campoMinado.Celula;
-import br.com.poli.campoMinado.Dificuldade;
 
 public abstract class Mapa {
-	// Atributos da classe Mapa
+	
+	// Atributos
 	private Celula[][] campo;
 
 	// Constutor
-	public Mapa(int bombas, int tamanho) {
+	public Mapa(int tamanho, int bombas) {
 
 		this.campo = new Celula[tamanho][tamanho];
 
@@ -20,19 +20,35 @@ public abstract class Mapa {
 		contarBombas();
 
 	}
+	
+	
+
+	public Celula[][] getCampo() {
+		return campo;
+	}
+
+
+
+	public void setCampo(Celula[][] campo) {
+		this.campo = campo;
+	}
+
+
 
 	public void inicializarCelula() {
 
 		for (int i = 0; i < campo.length; i++) {
 			for (int j = 0; j < campo.length; j++) {
-				this.campo[i][j] = new Celula(false, false, false, 0);// inicializa a celula
+				this.campo[i][j] = new Celula(false, false, false);// inicializa a celula
 			}
 		}
 	}
 
 	// Distribui as bombas do mapa
 	public void distribuirBombas(int bombas) {
-		int bomba = 0;
+		int contagem = 0;
+		int posicaoX ;
+		int posicaoY ;
 		// Uso da biblioteca Random
 		Random random = new Random();
 
@@ -40,11 +56,11 @@ public abstract class Mapa {
 		 * enquanto o numero de bombas for menor que o numero de bombas, ele vai rodar o
 		 * while
 		 */
-		while (bomba < bombas) {
+		while(contagem < bombas){
 
 			// gera posições aleatorias para a posição das bombas
-			int posicaoX = random.nextInt(this.campo.length);
-			int posicaoY = random.nextInt(this.campo.length);
+			 posicaoX = random.nextInt(this.campo.length);
+			 posicaoY = random.nextInt(this.campo.length);
 
 			/*
 			 * caso a posição X e Y já tenha uma bomba, ele não entra no if e gera outra
@@ -54,7 +70,31 @@ public abstract class Mapa {
 
 				this.campo[posicaoX][posicaoY].setBomba(true);
 				this.campo[posicaoX][posicaoY].setQtdBombasVizinhas(-1);
-				bomba++;
+				contagem++;
+			}
+		}
+	}
+
+	public void procurarZero(int linha, int coluna) {
+
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				if (!(linha + i < 0 || linha + i > this.campo.length - 1 || coluna + j < 0
+						|| coluna + j > this.campo.length - 1)) {// verifica se está dentro da matriz de campo
+					if (this.campo[linha + i][coluna + j].getQtdBombasVizinhas() == 0
+							&& this.campo[linha + i][coluna + j].isVisivel() == false) {// deixa visivel e faz a recursão
+																						
+						this.campo[linha + i][coluna + j].setVisivel(true);
+						this.procurarZero(linha + i, coluna + j);
+
+					} else if (this.campo[linha + i][coluna + j].getQtdBombasVizinhas() > 0
+							&& this.campo[linha + i][coluna + j].isVisivel() == false) {// se não for zero nem bomba, ele deixa visivel
+
+						this.campo[linha + i][coluna + j].setVisivel(true);
+
+					}
+
+				}
 			}
 		}
 	}
@@ -103,6 +143,10 @@ public abstract class Mapa {
 
 			}
 
+			else {
+				this.procurarZero(linha, coluna);
+
+			}
 
 			this.imprimeTela(false);
 		}
@@ -115,7 +159,7 @@ public abstract class Mapa {
 			for (int j = 0; j < this.campo.length; j++) {
 
 				System.out.print(" ");
-
+				//caso seja "true", ele mostra todo o apa com a localizações de cada bomba
 				if (teste == true) {
 
 					if (!this.campo[i][j].isBomba())

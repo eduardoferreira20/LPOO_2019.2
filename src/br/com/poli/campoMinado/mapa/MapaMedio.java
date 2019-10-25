@@ -2,7 +2,7 @@ package br.com.poli.campoMinado.mapa;
 
 import br.com.poli.campoMinado.Dificuldade;
 
-public class MapaMedio extends Mapa{
+public class MapaMedio extends Mapa {
 	
 	public static final Dificuldade TAMANHO = Dificuldade.MEDIO;
 	public static final int BOMBAS = 40;
