@@ -1,4 +1,6 @@
 package br.com.poli.campoMinado;
+import java.util.Scanner;
+
 import br.com.poli.campoMinado.mapa.*;
 public class CampoMinado{
 
@@ -49,6 +51,19 @@ public class CampoMinado{
 
 	public void setDificuldade(Dificuldade dificuldade) {
 		this.dificuldade = dificuldade;
+	}
+	//Laço que roda todo o jogo
+	public void iniciarJogo() {
+		Scanner posicao = new Scanner(System.in);
+		int linha, coluna;
+		while(this.mapa.isGanhouJogo() == false && this.mapa.isFimDeJogo()==false) {
+			System.out.print("Informe um número para a Coluna:");
+			coluna = posicao.nextInt();
+			System.out.print("Informe um número para a Linha: ");
+			linha = posicao.nextInt();
+			this.mapa.escolherPosicao(linha,coluna);
+			
+		}
 	}
 
 }
