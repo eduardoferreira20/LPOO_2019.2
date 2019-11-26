@@ -1,7 +1,8 @@
-package br.com.poli.campoMinado;
+package br.com.poli.campoMinado.jogo;
 import java.util.Scanner;
 
 import br.com.poli.campoMinado.mapa.*;
+import br.com.poli.campoMinado.rank.Jogador;
 public class CampoMinado{
 
 	// Atributos
@@ -63,6 +64,11 @@ public class CampoMinado{
 			linha = posicao.nextInt();
 			this.mapa.escolherPosicao(linha,coluna);
 			
+		}
+		posicao.close();// FECHA O SCANNER
+		if (this.mapa.isFimDeJogo()) {// SERVE PARA MOSTRAR COMO É O MAPA COMPLETO CASO O JOGADOR PERCA
+			System.out.println("Mapa Original:");
+			this.mapa.imprimeTela(true);
 		}
 	}
 

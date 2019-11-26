@@ -13,9 +13,5 @@ public class MapaFacil extends Mapa {
 	public static int getTamanho() {
 		return TAMANHO;
 	}
-
-	public static int getBombas() {
-		return BOMBAS;
-	}
 	
 }

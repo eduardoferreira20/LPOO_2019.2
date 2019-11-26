@@ -1,4 +1,4 @@
-package br.com.poli.campoMinado;
+package br.com.poli.campoMinado.jogo;
 
 public enum Dificuldade {
 

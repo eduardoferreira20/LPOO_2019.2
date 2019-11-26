@@ -3,8 +3,6 @@ package br.com.poli.campoMinado.mapa;
 //Import da Bbiblioteca Random usada para gerar posições aleatorias
 import java.util.Random;
 
-import br.com.poli.campoMinado.Celula;
-
 public abstract class Mapa {
 
 	// Atributos
@@ -14,6 +12,7 @@ public abstract class Mapa {
 	private boolean ganhouJogo;
 	private int celulasVisiveis;
 	private int bombas;
+	private boolean primeiraJogada;
 
 	// Constutor
 	public Mapa(int tamanho, int bombas) {
@@ -21,18 +20,24 @@ public abstract class Mapa {
 		this.fimDeJogo = false;
 		this.ganhouJogo = false;
 		this.bombas = bombas;
-
-		this.campo = new Celula[tamanho][tamanho];
-
-		inicializarCelula();
-		distribuirBombas(this.bombas);
-		contarBombas();
-		this.campo[0][0].buscarVizinhos(campo);
+		this.primeiraJogada = true;
+		this.campo = new Celula[tamanho][tamanho]; // inicializa a matriz campo com
+													// o tamanho escolhido
+		this.inicializarCelula();
+		Celula.buscarVizinhos(campo);
 
 	}
 
 	public Celula[][] getCampo() {
 		return campo;
+	}
+
+	public int getBombas() {
+		return bombas;
+	}
+
+	public void setBombas(int bombas) {
+		this.bombas = bombas;
 	}
 
 	public void setCampo(Celula[][] campo) {
@@ -55,7 +60,7 @@ public abstract class Mapa {
 
 		for (int i = 0; i < campo.length; i++) {
 			for (int j = 0; j < campo.length; j++) {
-				this.campo[i][j] = new Celula(i, j);// inicializa a celula
+				this.campo[i][j] = new Celula(false,false,false,i, j);// inicializa a celula
 			}
 		}
 	}
@@ -92,7 +97,7 @@ public abstract class Mapa {
 	}
 	
 
-	public void contarBombas() {
+	public void distribuirBombas() {
 
 		for (int linha = 0; linha < this.campo.length; linha++) { // procura por bombas no mapa
 			for (int coluna = 0; coluna < this.campo.length; coluna++) {
@@ -125,13 +130,13 @@ public abstract class Mapa {
 	private void revelarEspacos(Celula celulaEscolhida) {
 		
 		// Só entra se for invisivel a célula
-		if (celulaEscolhida.isVisivel() == false) {
+		if (celulaEscolhida.isVisivel() == false && celulaEscolhida.isBandeira() == false) {
 
 			celulaEscolhida.setVisivel(true);
 			this.celulasVisiveis++;
 			
 			//Se for uma célula em branco, ele entra na condição
-			if (celulaEscolhida.getQtdBombasVizinhas() == 0) {
+			if (celulaEscolhida.isEmBranco()) {
 				
 				//Percorre as vizinhas da célula escolhida									 
 				for (int i = 0; i < celulaEscolhida.getVizinhas().size(); i++) {
@@ -153,28 +158,40 @@ public abstract class Mapa {
 
 	public void escolherPosicao(int linha, int coluna) {
 
-		if (this.campo[linha][coluna].isVisivel() == false) {
-			if (this.campo[linha][coluna].isBomba()) {
-				this.campo[linha][coluna].setVisivel(true);
-				this.celulasVisiveis++;
-				this.fimDeJogo = true;
-				System.out.println("Fim de jogo. Você perdeu!!");
+		this.jogadaInicial(linha, coluna);
+
+		// OLHA SE A POSICAO ESCOLHIDA TA DENTRO DA MATRIZ
+		if (linha >= 0 && linha < this.campo.length && coluna >= 0 && coluna < this.campo.length) {
+
+			if (this.campo[linha][coluna].isVisivel() == false) { // SO VAI PODER ESCOLHERPOSICAO SE A CELULA NAO FOR
+																	// VISIVEL
+				if (this.campo[linha][coluna].isBomba()) {// SE FOR BOMBA
+					this.campo[linha][coluna].setVisivel(true);
+					this.celulasVisiveis++;
+					this.fimDeJogo = true; // CASO SELECIONE UMA BOMBA, O JOGO ACABA
+
+					for (int i = 0; i < this.campo.length; i++)
+						for (int j = 0; j < this.campo.length; j++)
+							this.campo[i][j].setVisivel(true);
+
+					System.out.println("Fim de jogo. Você perdeu!!");
+				}
+
+				else if (this.campo[linha][coluna].isEmBranco() == false) {// SE NAO FOR BOMBA NEM 0
+					this.campo[linha][coluna].setVisivel(true);
+					this.celulasVisiveis++;
+
+				}
+
+				else {// SE FOR EM BRANCO
+					this.revelarEspacos(this.campo[linha][coluna]);
+				}
+
+				this.imprimeTela(false);// DPS QUE ESCOLHE A POSICAO IMPRIME A TELA DE COMO FICOU
+				this.ganhouJogo = this.verificarGanhouJogo();
 			}
-
-			else if (this.campo[linha][coluna].getQtdBombasVizinhas() != 0) {
-				this.campo[linha][coluna].setVisivel(true);
-				this.celulasVisiveis++;
-
-			}
-
-			else {
-				this.revelarEspacos(this.campo[linha][coluna]);
-
-			}
-
-			this.imprimeTela(false);
-			this.ganhouJogo = this.verificarGanhouJogo();
 		}
+
 	}
 
 	// mostra o campo minado pronto
@@ -194,7 +211,9 @@ public abstract class Mapa {
 
 				else {
 
-					if (this.campo[i][j].isVisivel()) {
+					if (this.campo[i][j].isBandeira()) {
+						System.out.print(" b");
+					} else if (this.campo[i][j].isVisivel()) {
 						if (!this.campo[i][j].isBomba())
 							System.out.print(" ");
 						System.out.print(this.campo[i][j].getQtdBombasVizinhas());
@@ -203,6 +222,48 @@ public abstract class Mapa {
 				}
 			}
 			System.out.println();
+		}
+
+	}
+	
+	private void jogadaInicial(int linha, int coluna) {
+		if (this.primeiraJogada == true) {
+			this.primeiraJogada = false;
+			this.campo[linha][coluna].setCelulaInicial(true);
+			for (int i = 0; i < this.campo[linha][coluna].getVizinhas().size(); i++)
+				this.campo[linha][coluna].getVizinhas().get(i).setCelulaInicial(true);
+			
+			this.distribuirBombas(this.bombas);
+			this.contarBombas();
+		}
+	}
+	
+	public void contarBombas() {
+
+		for (int linha = 0; linha < this.campo.length; linha++) { // PROCURANDO BOMBAS
+			for (int coluna = 0; coluna < this.campo.length; coluna++) {
+				if (this.campo[linha][coluna].isBomba()) { // ACHOU
+
+					for (int i = -1; i <= 1; i++) {// OLHA AO REDOR DA BOMBA
+						for (int j = -1; j <= 1; j++) {
+
+							if (!(linha + i < 0 || linha + i > this.campo.length - 1 || coluna + j < 0
+									|| coluna + j > this.campo.length - 1)) { // VERIFICA SE ESTA DENTRO DA MATRIZ
+								if (this.campo[linha + i][coluna + j].isBomba() == false) {// SE NAO FOR BOMBA, SOMA +1
+																							// NA QNTDD DE BOMBAS
+																							// VIZINHAS
+									this.campo[linha + i][coluna + j].setQtdBombasVizinhas(
+											this.campo[linha + i][coluna + j].getQtdBombasVizinhas() + 1);
+
+								}
+							}
+
+						}
+
+					}
+
+				}
+			}
 		}
 
 	}

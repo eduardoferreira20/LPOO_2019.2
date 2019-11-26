@@ -13,7 +13,4 @@ public class MapaDificil extends Mapa {
 		return TAMANHO;
 	}
 
-	public static int getBombas() {
-		return BOMBAS;
-	}
 }
