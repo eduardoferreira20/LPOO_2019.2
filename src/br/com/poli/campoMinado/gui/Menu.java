@@ -24,6 +24,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import br.com.poli.campoMinado.jogo.*;
+import br.com.poli.campoMinado.gui.TelaRanking;
 
 public class Menu extends JFrame {
 
@@ -38,6 +39,8 @@ public class Menu extends JFrame {
 	private JButton btnEntrar;
 	private JLabel lblCampoMinado;
 	private ImageIcon tela;
+	private JButton btnRanking;
+	private TelaRanking ranking;
 	
 	/**
 	 * Launch the application.
@@ -54,7 +57,6 @@ public class Menu extends JFrame {
 			}
 		});
 	}
-
 	
 	public Menu() {
 
@@ -97,7 +99,7 @@ public class Menu extends JFrame {
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String nomeJogador = (txtNomeJogador.getText());
-				if (!txtNomeJogador.getText().isEmpty() && txtNomeJogador.getText().length()<=10) {
+				if (!txtNomeJogador.getText().isEmpty() && txtNomeJogador.getText().length()<=15) {
 						if (comboBoxDificuldade.getSelectedIndex() == 0) {
 							tela1 = new Jogo(Dificuldade.FACIL, nomeJogador);
 						} else if (comboBoxDificuldade.getSelectedIndex() == 1) {
@@ -110,7 +112,16 @@ public class Menu extends JFrame {
 				}
 			}
 		});
-
+		btnRanking = new JButton("Ranking");
+		btnRanking.setBounds(116, 415, 89, 23);
+		contentPane.add(btnRanking);
+		btnRanking.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ranking = new TelaRanking();
+				ranking.setVisible(true);
+				dispose();
+			}
+		});
 		btnEntrar.setBounds(376, 400, 167, 156);
 		panel.add(btnEntrar);
 
@@ -120,7 +131,7 @@ public class Menu extends JFrame {
 
 		panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		contentPane.add(panel, "Campo Minado");
+		contentPane.add(panel,"Campo Minado");
 		panel.setLayout(null);
 		panel.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
 
@@ -138,7 +149,7 @@ public class Menu extends JFrame {
 		contentPane.setLayout(new CardLayout(0, 0));
 		this.setResizable(false);
 
-		play = new ImageIcon("./resources/images/iconPlay.jpg");
+		play = new ImageIcon("./resources/images/iconPlay.png");
 		tela = new ImageIcon("./resources/images/iconBombaFacil.jpg");
 		this.setIconImage(tela.getImage());
 		this.setTitle("Campo Minado");

@@ -7,9 +7,9 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		CampoMinado campo = new CampoMinado("Eduardo", Dificuldade.FACIL);
+		CampoMinado campo = new CampoMinado("Eduardo", Dificuldade.DIFICIL);
 		Resolvedor r = new Resolvedor(campo.getMapa());
-		r.escolhePosicaoResolvedor();
+		r.resolver();
 //		campo.getMapa().imprimeTela(false);
 //		campo.iniciarJogo();
 	}

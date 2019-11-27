@@ -2,6 +2,8 @@ package br.com.poli.campoMinado.mapa;
 
 import java.util.List;
 
+import br.com.poli.campoMinado.mapa.Celula;
+
 import java.util.ArrayList;
 
 public class Celula {
@@ -13,9 +15,11 @@ public class Celula {
 	private boolean celulaInicial;
 	private List<Celula> vizinhas;
 	private ArrayList<Celula> naoVisivel;
+	private	ArrayList<Celula> bandeirasVisinhas;
 	private int linha;
 	private int coluna;
 	private boolean qualificada;
+	private int casoQualifiacao;
 
 	public Celula(boolean bandeira, boolean bomba, boolean visivel, int linha, int coluna) {
 		this.celulaInicial = false;
@@ -26,11 +30,29 @@ public class Celula {
 		this.linha = linha;
 		this.coluna = coluna;
 		this.naoVisivel = new ArrayList<Celula>();
+		this.bandeirasVisinhas = new ArrayList<Celula>();
 		this.qualificada = false;
+		this.casoQualifiacao = 0;
 	}
 
 	public boolean isQualificada() {
 		return qualificada;
+	}
+	
+	public int getCasoQualifiacao() {
+		return casoQualifiacao;
+	}
+
+	public void setCasoQualifiacao(int casoQualifiacao) {
+		this.casoQualifiacao = casoQualifiacao;
+	}
+
+	public ArrayList<Celula> getBandeirasVisinhas() {
+		return bandeirasVisinhas;
+	}
+
+	public void setBandeirasVisinhas(ArrayList<Celula> bandeirasVisinhas) {
+		this.bandeirasVisinhas = bandeirasVisinhas;
 	}
 
 	public void setQualificada(boolean qualificada) {

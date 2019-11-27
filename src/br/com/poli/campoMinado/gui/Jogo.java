@@ -24,6 +24,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+import br.com.poli.campoMinado.Resolvedor;
 import br.com.poli.campoMinado.jogo.Dificuldade;
 import br.com.poli.campoMinado.mapa.Celula;
 import br.com.poli.campoMinado.mapa.Mapa;
@@ -31,6 +32,7 @@ import br.com.poli.campoMinado.mapa.MapaDificil;
 import br.com.poli.campoMinado.mapa.MapaFacil;
 import br.com.poli.campoMinado.mapa.MapaMedio;
 import br.com.poli.campoMinado.rank.Ranking;
+import br.com.poli.campoMinado.gui.BotaoPlay;
 import br.com.poli.campoMinado.rank.*;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -58,6 +60,8 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 	private Ranking rank;
 	private JLabel lblIconContador;
 	private boolean primeiraJogada;
+	private JButton btnSolucao;
+	private Resolvedor resolver;
 
 	public Jogo(Dificuldade dificuldade, String nomeJogador) {
 		this.primeiraJogada = true;
@@ -202,18 +206,22 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		lblNumeroBombas = new JLabel();
 		lblNumeroBombas.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNumeroBombas.setFont(timer.getFont());
-
 		lblIconContador = new JLabel();
 		lblIconContador.setIcon(iconContador);
+		
+		btnSolucao = new JButton("Resolver");
+		btnSolucao.addActionListener(this);
 
 		GroupLayout gl_painelSuperior = new GroupLayout(painelSuperior);
 		gl_painelSuperior.setHorizontalGroup(gl_painelSuperior.createParallelGroup(Alignment.LEADING)
 				.addGroup(Alignment.TRAILING, gl_painelSuperior.createSequentialGroup().addContainerGap()
 						.addComponent(botaoSair).addPreferredGap(ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
-						.addComponent(timer, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE).addGap(128)
+						.addComponent(btnSolucao)
+						.addPreferredGap(ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+						.addComponent(timer, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE).addGap(278)
 						.addComponent(lblIconContador, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(lblNumeroBombas, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNumeroBombas, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
 						.addGap(38)));
 		gl_painelSuperior.setVerticalGroup(gl_painelSuperior.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_painelSuperior.createSequentialGroup().addGroup(gl_painelSuperior
@@ -226,6 +234,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 										.addGroup(gl_painelSuperior.createParallelGroup(Alignment.LEADING)
 												.addComponent(botaoSair, GroupLayout.DEFAULT_SIZE,
 														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(btnSolucao)
 												.addComponent(timer, GroupLayout.PREFERRED_SIZE, 23, Short.MAX_VALUE))))
 						.addGroup(gl_painelSuperior.createSequentialGroup().addGap(27).addComponent(lblNumeroBombas)))
 						.addContainerGap()));
@@ -287,7 +296,16 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 	private void atualizarNumeroBombas() {
 		lblNumeroBombas.setText(Integer.toString(this.numeroBombas));
 	}
+	private void botaoPlayActionPerformed(ActionEvent e) {
+		BotaoPlay botao = (BotaoPlay) e.getSource();
+		System.out.println(botao.getLinha() + " " + botao.getColuna());
+		
+		mapa.escolherPosicao(botao.getLinha(), botao.getColuna()); // ESCOLHE A POSICAO DO BOTAO APERTADO
+		
+		atualizarTela();
 
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
@@ -342,10 +360,26 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 			botaoJogoActionPerformed(e);
 		} else if (e.getSource() == botaoSair) {
 			this.voltarMenu();
+		}else if(e.getSource() == btnSolucao) {
+			resolver = new Resolvedor(this.mapa);
+			resolver.resolver();
+			atualizarNumeroBombas();
+			
+			atualizarTela();
+			
 		}
 
 	}
+	private void atualizarTela() {
+		if(this.primeiraJogada == true) {
+			this.primeiraJogada = false;
+			this.montarLabelNumeros();
+		}
 
+		this.esconderBotao();
+		
+		this.acabarJogo();
+	}
 	private void voltarMenu() {
 		menu = new Menu();
 		menu.setVisible(true);
@@ -410,7 +444,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		}
 
 		this.esconderBotao();
-		 mapa.ganhar();
+		mapa.ganhar();
 		this.acabarJogo();
 
 	}

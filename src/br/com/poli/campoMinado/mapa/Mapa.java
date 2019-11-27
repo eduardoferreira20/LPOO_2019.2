@@ -39,7 +39,7 @@ public abstract class Mapa {
 	public void setBombas(int bombas) {
 		this.bombas = bombas;
 	}
-	
+	//Metodo teste usado para ver se o ranking estava funcionando
 	public void ganhar() {
 		ganhouJogo = true;
 	}
@@ -215,13 +215,16 @@ public abstract class Mapa {
 				}
 
 				else {
-
+					//Se for uma bandeira, ele coloca um "P" no lugar
 					if (this.campo[i][j].isBandeira()) {
-						System.out.print(" b");
+						System.out.print(" P");
+						
 					} else if (this.campo[i][j].isVisivel()) {
+						
 						if (!this.campo[i][j].isBomba())
 							System.out.print(" ");
 						System.out.print(this.campo[i][j].getQtdBombasVizinhas());
+						
 					} else
 						System.out.print(" *");
 				}
@@ -230,7 +233,7 @@ public abstract class Mapa {
 		}
 
 	}
-	
+	//Verifica se é a primeira jogada feita
 	private void jogadaInicial(int linha, int coluna) {
 		if (this.primeiraJogada == true) {
 			this.primeiraJogada = false;
