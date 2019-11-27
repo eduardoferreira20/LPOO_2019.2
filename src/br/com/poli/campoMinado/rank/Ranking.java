@@ -32,8 +32,8 @@ public abstract class Ranking {
 	private void criarLista() {
 		listaJogadores.add(novoJogador);
 		Collections.sort(listaJogadores, new CompararJogadores());
-		
-		if(listaJogadores.size() > 5) {//SE TIVER MAIS DO QUE 5 ELEMENTOS NA LISTA ORDENADA, ELE EXCLUI OS ULTIMOS
+		//Se tiver mais de 5 itens na lista, ele exclui o ultimo
+		if(listaJogadores.size() > 5) {
 			for(int i = 5; i<listaJogadores.size();i++) {
 				listaJogadores.remove(i);
 			}
@@ -49,7 +49,7 @@ public abstract class Ranking {
 			ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
 			objectOutput.writeObject(listaJogadores);
 			objectOutput.close();
-			System.out.println("O Jogador foi salvo no arquivo");
+			System.out.println("Os dados foram salvos com sucesso");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,8 +65,8 @@ public abstract class Ranking {
 			listaJogadores = (ArrayList<Jogador>) objectInput.readObject();
 			objectInput.close();
 			System.out.println(listaJogadores.toString());
-
-		}catch(FileNotFoundException f) { //SE NAO TIVER ARQUIVO CRIADO ELE SAI DO MÉTODO
+			// se não tiver arquivo criado, ele sai do método
+		}catch(FileNotFoundException f) {
 			return;
 		}
 		catch (Exception e) {

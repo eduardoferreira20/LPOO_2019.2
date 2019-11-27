@@ -8,8 +8,10 @@ public class Main {
 	public static void main(String[] args) {
 		
 		CampoMinado campo = new CampoMinado("Eduardo", Dificuldade.FACIL);
-		campo.getMapa().imprimeTela(false);
-		campo.iniciarJogo();
+		Resolvedor r = new Resolvedor(campo.getMapa());
+		r.escolhePosicaoResolvedor();
+//		campo.getMapa().imprimeTela(false);
+//		campo.iniciarJogo();
 	}
 
 }

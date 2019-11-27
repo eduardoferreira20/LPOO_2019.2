@@ -12,9 +12,10 @@ public class Celula {
 	private boolean visivel;
 	private boolean celulaInicial;
 	private List<Celula> vizinhas;
-	private List<Celula> naoVisivel;
+	private ArrayList<Celula> naoVisivel;
 	private int linha;
 	private int coluna;
+	private boolean qualificada;
 
 	public Celula(boolean bandeira, boolean bomba, boolean visivel, int linha, int coluna) {
 		this.celulaInicial = false;
@@ -25,6 +26,15 @@ public class Celula {
 		this.linha = linha;
 		this.coluna = coluna;
 		this.naoVisivel = new ArrayList<Celula>();
+		this.qualificada = false;
+	}
+
+	public boolean isQualificada() {
+		return qualificada;
+	}
+
+	public void setQualificada(boolean qualificada) {
+		this.qualificada = qualificada;
 	}
 
 	public boolean isEmBranco() {
@@ -65,11 +75,11 @@ public class Celula {
 		this.celulaInicial = celulaInicial;
 	}
 
-	public List<Celula> getNaoVisivel() {
+	public ArrayList<Celula> getNaoVisivel() {
 		return naoVisivel;
 	}
 
-	public void setNaoVisivel(List<Celula> naoVisivel) {
+	public void setNaoVisivel(ArrayList<Celula> naoVisivel) {
 		this.naoVisivel = naoVisivel;
 	}
 

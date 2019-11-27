@@ -39,6 +39,10 @@ public abstract class Mapa {
 	public void setBombas(int bombas) {
 		this.bombas = bombas;
 	}
+	
+	public void ganhar() {
+		ganhouJogo = true;
+	}
 
 	public void setCampo(Celula[][] campo) {
 		this.campo = campo;
@@ -160,15 +164,16 @@ public abstract class Mapa {
 
 		this.jogadaInicial(linha, coluna);
 
-		// OLHA SE A POSICAO ESCOLHIDA TA DENTRO DA MATRIZ
+		//Olha se a posição escolhida está dentro da matriz
 		if (linha >= 0 && linha < this.campo.length && coluna >= 0 && coluna < this.campo.length) {
-
-			if (this.campo[linha][coluna].isVisivel() == false) { // SO VAI PODER ESCOLHERPOSICAO SE A CELULA NAO FOR
-																	// VISIVEL
-				if (this.campo[linha][coluna].isBomba()) {// SE FOR BOMBA
+			//So pode escolher se a celula nao for visivel
+			if (this.campo[linha][coluna].isVisivel() == false) { 
+				//Se for bomba													
+				if (this.campo[linha][coluna].isBomba()) {
 					this.campo[linha][coluna].setVisivel(true);
 					this.celulasVisiveis++;
-					this.fimDeJogo = true; // CASO SELECIONE UMA BOMBA, O JOGO ACABA
+					//Se você escolher uma bomba perde
+					this.fimDeJogo = true; 
 
 					for (int i = 0; i < this.campo.length; i++)
 						for (int j = 0; j < this.campo.length; j++)
@@ -177,17 +182,17 @@ public abstract class Mapa {
 					System.out.println("Fim de jogo. Você perdeu!!");
 				}
 
-				else if (this.campo[linha][coluna].isEmBranco() == false) {// SE NAO FOR BOMBA NEM 0
+				else if (this.campo[linha][coluna].isEmBranco() == false) {
 					this.campo[linha][coluna].setVisivel(true);
 					this.celulasVisiveis++;
 
 				}
-
-				else {// SE FOR EM BRANCO
+				//Se for em branco
+				else {
 					this.revelarEspacos(this.campo[linha][coluna]);
 				}
-
-				this.imprimeTela(false);// DPS QUE ESCOLHE A POSICAO IMPRIME A TELA DE COMO FICOU
+				//Depois de escolhida a posição, imprime a tela de novo
+				this.imprimeTela(false);
 				this.ganhouJogo = this.verificarGanhouJogo();
 			}
 		}
@@ -239,19 +244,18 @@ public abstract class Mapa {
 	}
 	
 	public void contarBombas() {
-
-		for (int linha = 0; linha < this.campo.length; linha++) { // PROCURANDO BOMBAS
+		//procura bombas
+		for (int linha = 0; linha < this.campo.length; linha++) { 
 			for (int coluna = 0; coluna < this.campo.length; coluna++) {
-				if (this.campo[linha][coluna].isBomba()) { // ACHOU
-
-					for (int i = -1; i <= 1; i++) {// OLHA AO REDOR DA BOMBA
+				if (this.campo[linha][coluna].isBomba()) {
+					//procura nas casas ao redor das bombas
+					for (int i = -1; i <= 1; i++) {
 						for (int j = -1; j <= 1; j++) {
-
+							//verifica se está dentro da matriz
 							if (!(linha + i < 0 || linha + i > this.campo.length - 1 || coluna + j < 0
-									|| coluna + j > this.campo.length - 1)) { // VERIFICA SE ESTA DENTRO DA MATRIZ
-								if (this.campo[linha + i][coluna + j].isBomba() == false) {// SE NAO FOR BOMBA, SOMA +1
-																							// NA QNTDD DE BOMBAS
-																							// VIZINHAS
+									|| coluna + j > this.campo.length - 1)) {
+								//Se não for bomba, soma mais um
+								if (this.campo[linha + i][coluna + j].isBomba() == false) {		
 									this.campo[linha + i][coluna + j].setQtdBombasVizinhas(
 											this.campo[linha + i][coluna + j].getQtdBombasVizinhas() + 1);
 

@@ -388,7 +388,6 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 
 			if (mapa.isFimDeJogo()) {
 				JOptionPane.showMessageDialog(this, "VOCÊ PERDEU", "FIM DE JOGO", JOptionPane.INFORMATION_MESSAGE);
-
 			} else {
 				JOptionPane.showMessageDialog(this, this.nomeJogador + "! ", "VOCÊ GANHOU",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -411,12 +410,13 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		}
 
 		this.esconderBotao();
+		 mapa.ganhar();
 		this.acabarJogo();
 
 	}
 
 	private Celula celulaEscolhida(BotaoPlay botao) {
-		// REtorna a celula da mesma posicao do botao
+		// Retorna a celula da mesma posicao do botao
 		return mapa.getCelula(botao.getLinha(), botao.getColuna());
 	}
 }
