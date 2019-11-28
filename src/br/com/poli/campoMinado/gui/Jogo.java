@@ -86,9 +86,10 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		}
 
 	}
-
+	//Confidura cor da fonte do jogo
 	private void configurarNumeros(int i, int j) {
 		lblNumeros[i][j].setText(Integer.toString(this.mapa.getCelula(i, j).getQtdBombasVizinhas()));
+
 		switch (this.mapa.getCelula(i, j).getQtdBombasVizinhas()) {
 		case 1:
 			lblNumeros[i][j].setForeground(Color.BLUE.brighter().brighter());
@@ -135,7 +136,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		iconContador = new ImageIcon("./resources/images/iconBombaMedio.jpg");
 		this.setIconImage(iconBomba.getImage());
 	}
-
+	//Mostra a quantidade de bombas vizinhas
 	private void montarLabelNumeros() {
 
 		lblNumeros = new JLabel[this.dificuldade.getValor()][this.dificuldade.getValor()];
@@ -146,9 +147,9 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 			for (int j = 0; j < lblNumeros.length; j++) {
 				lblNumeros[i][j] = new JLabel("", SwingConstants.CENTER);
 				lblNumeros[i][j].setVisible(true);
-
+				//Configura a fonte a partir da fonte usada
 				configuraFonteNumeros(lblNumeros[i][j]);
-
+				//Adiciona painel
 				this.painelCelulas.add(lblNumeros[i][j]);
 				if (this.mapa.getCelula(i, j).isBomba() == false) {
 					if (this.mapa.getCelula(i, j).isEmBranco() == false) {
@@ -158,6 +159,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 						this.lblNumeros[i][j].setBackground(Color.GRAY.brighter());
 					}
 				} else {
+					//Se for bomba deixa opaco,fundo branco e adiciona o icone da bomba
 					lblNumeros[i][j].setOpaque(true);
 					lblNumeros[i][j].setBackground(Color.WHITE);
 					lblNumeros[i][j].setIcon(iconBomba);
@@ -185,7 +187,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		this.setLocationRelativeTo(null);
 
 	}
-
+	//Monta um painel com outros paineis
 	private void montarLayeredPane() {
 		layeredPane = new JLayeredPane();
 		getContentPane().add(layeredPane, BorderLayout.NORTH);
@@ -194,7 +196,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		layeredPane.setOpaque(true);
 		layeredPane.setBackground(Color.WHITE.darker());
 	}
-
+	//Monta o painel superios com o tempo,bombas,botão de sair e o IA
 	public void PainelSuperior() {
 		timer = new Contador();
 		JPanel painelSuperior = new JPanel();
@@ -208,7 +210,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		lblNumeroBombas.setFont(timer.getFont());
 		lblIconContador = new JLabel();
 		lblIconContador.setIcon(iconContador);
-		
+
 		btnSolucao = new JButton("Resolver");
 		btnSolucao.addActionListener(this);
 
@@ -216,8 +218,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		gl_painelSuperior.setHorizontalGroup(gl_painelSuperior.createParallelGroup(Alignment.LEADING)
 				.addGroup(Alignment.TRAILING, gl_painelSuperior.createSequentialGroup().addContainerGap()
 						.addComponent(botaoSair).addPreferredGap(ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
-						.addComponent(btnSolucao)
-						.addPreferredGap(ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+						.addComponent(btnSolucao).addPreferredGap(ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
 						.addComponent(timer, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE).addGap(278)
 						.addComponent(lblIconContador, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.RELATED)
@@ -230,17 +231,18 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 								.addGroup(Alignment.LEADING,
 										gl_painelSuperior.createSequentialGroup().addGap(10).addComponent(
 												lblIconContador, GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE))
-								.addGroup(Alignment.LEADING, gl_painelSuperior.createSequentialGroup().addContainerGap()
-										.addGroup(gl_painelSuperior.createParallelGroup(Alignment.LEADING)
-												.addComponent(botaoSair, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(btnSolucao)
-												.addComponent(timer, GroupLayout.PREFERRED_SIZE, 23, Short.MAX_VALUE))))
+								.addGroup(Alignment.LEADING,
+										gl_painelSuperior.createSequentialGroup().addContainerGap()
+												.addGroup(gl_painelSuperior.createParallelGroup(Alignment.LEADING)
+														.addComponent(botaoSair, GroupLayout.DEFAULT_SIZE,
+																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+														.addComponent(btnSolucao).addComponent(timer,
+																GroupLayout.PREFERRED_SIZE, 23, Short.MAX_VALUE))))
 						.addGroup(gl_painelSuperior.createSequentialGroup().addGap(27).addComponent(lblNumeroBombas)))
 						.addContainerGap()));
 		painelSuperior.setLayout(gl_painelSuperior);
 	}
-
+	//Painel do jogo
 	private void PainelJogo(Dificuldade dificuldade) {
 
 		// Painel do jogo
@@ -256,7 +258,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		layeredPane.add(painelCelulas);
 
 	}
-
+	//Botões selecionaveis do campo minado
 	private void BotoesJogo() {
 
 		botoes = new BotaoPlay[dificuldade.getValor()][dificuldade.getValor()];
@@ -274,7 +276,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		}
 
 	}
-
+	//Inicializa o mapa baseado na dificuldade escolhida pelo jogador
 	private void iniciarJogo(Dificuldade dificuldade) {
 
 		switch (dificuldade) {
@@ -292,20 +294,21 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		this.montarTela();
 
 	}
-
+	//Atualiza o número de bombas no contador
 	private void atualizarNumeroBombas() {
 		lblNumeroBombas.setText(Integer.toString(this.numeroBombas));
 	}
+
 	private void botaoPlayActionPerformed(ActionEvent e) {
 		BotaoPlay botao = (BotaoPlay) e.getSource();
 		System.out.println(botao.getLinha() + " " + botao.getColuna());
-		
+
 		mapa.escolherPosicao(botao.getLinha(), botao.getColuna()); // ESCOLHE A POSICAO DO BOTAO APERTADO
-		
+
 		atualizarTela();
 
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
@@ -360,26 +363,28 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 			botaoJogoActionPerformed(e);
 		} else if (e.getSource() == botaoSair) {
 			this.voltarMenu();
-		}else if(e.getSource() == btnSolucao) {
+		} else if (e.getSource() == btnSolucao) {
 			resolver = new Resolvedor(this.mapa);
 			resolver.resolver();
 			atualizarNumeroBombas();
-			
+
 			atualizarTela();
-			
+
 		}
 
 	}
+
 	private void atualizarTela() {
-		if(this.primeiraJogada == true) {
+		if (this.primeiraJogada == true) {
 			this.primeiraJogada = false;
 			this.montarLabelNumeros();
 		}
 
 		this.esconderBotao();
-		
+
 		this.acabarJogo();
 	}
+
 	private void voltarMenu() {
 		menu = new Menu();
 		menu.setVisible(true);
@@ -390,7 +395,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		// For para olhar todos os botoes
 		for (int i = 0; i < dificuldade.getValor(); i++) {
 			for (int j = 0; j < dificuldade.getValor(); j++) {
-				// Se a celula e o botao forem visiveis, esconde o botao
+				// Se a celula e o botao forem visiveis, esconde o botao 
 				if (celulaEscolhida(botoes[i][j]).isVisivel() && botoes[i][j].isVisible()) {
 
 					botoes[i][j].setVisible(false);
@@ -399,7 +404,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 			}
 		}
 	}
-
+	//Ao final do jogo, abre um arquivo ranking específico para a dificuldade escolhida e salva os dados nele
 	private void iniciarRanking() {
 		switch (this.dificuldade) {
 		case FACIL:
@@ -414,7 +419,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		}
 		rank.iniciarRanking();
 	}
-
+	//Verifica a condição para o usuário ganhar ou perder o jogo
 	private void acabarJogo() {
 		if (mapa.isFimDeJogo() || mapa.isGanhouJogo()) {
 

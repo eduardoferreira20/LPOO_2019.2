@@ -144,7 +144,9 @@ public abstract class Mapa {
 				
 				//Percorre as vizinhas da célula escolhida									 
 				for (int i = 0; i < celulaEscolhida.getVizinhas().size(); i++) {
+					//faz a recursão com a vizinha
 					this.revelarEspacos(celulaEscolhida.getVizinhas().get(i));
+					//o gti(i) funciona como um um vetor, para acessar ele, como uma lista
 				}
 			}
 		}

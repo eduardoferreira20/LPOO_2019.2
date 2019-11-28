@@ -7,8 +7,8 @@ public class Jogador implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String nome;
-	private String tempo;
-	private int tempoTotal;
+	private String tempo;// tempo do jogo, no formato de minutos:segundos
+	private int tempoTotal;//tempo total usando pelo rank para compração
 	
 	public Jogador(String nome) {
 		this.nome = nome;

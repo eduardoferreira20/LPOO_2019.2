@@ -39,8 +39,8 @@ public class Menu extends JFrame {
 	private JButton btnEntrar;
 	private JLabel lblCampoMinado;
 	private ImageIcon tela;
-	private JButton btnRanking;
-	private TelaRanking ranking;
+//	private JButton btnRanking;
+//	private TelaRanking ranking;
 	
 	/**
 	 * Launch the application.
@@ -63,7 +63,7 @@ public class Menu extends JFrame {
 		configurarTela();
 
 	}
-
+	//Configura a textfield onde o jogador adiciona o nome
 	private void configurarTextField() {
 		txtNomeJogador = new JTextField();
 		txtNomeJogador.setBounds(389, 284, 140, 35);
@@ -112,16 +112,7 @@ public class Menu extends JFrame {
 				}
 			}
 		});
-		btnRanking = new JButton("Ranking");
-		btnRanking.setBounds(116, 415, 89, 23);
-		contentPane.add(btnRanking);
-		btnRanking.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ranking = new TelaRanking();
-				ranking.setVisible(true);
-				dispose();
-			}
-		});
+
 		btnEntrar.setBounds(376, 400, 167, 156);
 		panel.add(btnEntrar);
 
