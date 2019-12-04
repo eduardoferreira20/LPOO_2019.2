@@ -211,7 +211,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		lblIconContador = new JLabel();
 		lblIconContador.setIcon(iconContador);
 
-		btnSolucao = new JButton("Resolver");
+		btnSolucao = new JButton("Desistir");
 		btnSolucao.addActionListener(this);
 
 		GroupLayout gl_painelSuperior = new GroupLayout(painelSuperior);
@@ -449,7 +449,7 @@ public class Jogo extends JFrame implements ActionListener, MouseListener {
 		}
 
 		this.esconderBotao();
-		mapa.ganhar();
+//		mapa.ganhar();
 		this.acabarJogo();
 
 	}

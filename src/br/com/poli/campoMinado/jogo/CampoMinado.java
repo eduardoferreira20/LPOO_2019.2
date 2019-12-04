@@ -28,7 +28,6 @@ public class CampoMinado{
 
 		}
 	}
-
 	// Getters e Setters
 	public Jogador getJogador() {
 		return jogador;
@@ -65,8 +64,8 @@ public class CampoMinado{
 			this.mapa.escolherPosicao(linha,coluna);
 			
 		}
-		posicao.close();// FECHA O SCANNER
-		if (this.mapa.isFimDeJogo()) {// SERVE PARA MOSTRAR COMO É O MAPA COMPLETO CASO O JOGADOR PERCA
+		posicao.close();
+		if (this.mapa.isFimDeJogo()) {
 			System.out.println("Mapa Original:");
 			this.mapa.imprimeTela(true);
 		}

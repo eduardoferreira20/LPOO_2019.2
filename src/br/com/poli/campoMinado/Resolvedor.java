@@ -65,11 +65,11 @@ public class Resolvedor {
 		}
 	}
 	//Usado para calcular a diferença de bombas e bandeiras vizinhas
-	public int diferenca(int x, int y) {
-		if (x > y) {
-			return x - y;
+	public int diferenca(int bomba, int bandeira) {
+		if (bomba > bandeira) {
+			return bomba - bandeira;
 		} else {
-			return y - x;
+			return bandeira - bomba;
 		}
 	}
 

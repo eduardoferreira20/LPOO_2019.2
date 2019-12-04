@@ -39,12 +39,8 @@ public class Menu extends JFrame {
 	private JButton btnEntrar;
 	private JLabel lblCampoMinado;
 	private ImageIcon tela;
-//	private JButton btnRanking;
-//	private TelaRanking ranking;
+
 	
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

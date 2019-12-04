@@ -78,7 +78,7 @@ public abstract class Mapa {
 		Random random = new Random();
 
 		/*
-		 * enquanto o numero de bombas for menor que o numero de bombas, ele vai rodar o
+		 * enquanto o numero da variavel "contagem" for menor que o numero de bombas, ele vai rodar o
 		 * while
 		 */
 		while (contagem < bombas) {
@@ -139,8 +139,8 @@ public abstract class Mapa {
 			celulaEscolhida.setVisivel(true);
 			this.celulasVisiveis++;
 			
-			//Se for uma célula em branco, ele entra na condição
-			if (celulaEscolhida.isEmBranco()) {
+			//Se for uma célula em branco, ele entra na condição   
+			if (celulaEscolhida.isEmBranco()) {                    
 				
 				//Percorre as vizinhas da célula escolhida									 
 				for (int i = 0; i < celulaEscolhida.getVizinhas().size(); i++) {
